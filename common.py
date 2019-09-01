@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from pathlib import Path
 import os, re
 
@@ -50,4 +51,16 @@ def find_root_by_file_name(base_dir, file_name_sections, reserve_mode='child', r
       if d not in trash:
         filterd.append(d)
     result = filterd
+  return result
+
+def artifact_relative_dirs(artifact_coordinates):
+  result = []
+  for artifact in artifact_coordinates:
+    sections = artifact.split(':')
+    if 5 < len(sections):
+      continue
+    group_id, artifact_id, package, version, scope = tuple(sections)
+    group_id_dir = group_id.replace('.', '/')
+    artifact_dir = '{}/{}/{}'.format(group_id_dir, artifact_id, version)
+    result.append(artifact_dir)
   return result
