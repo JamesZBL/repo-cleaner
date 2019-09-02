@@ -65,6 +65,7 @@ def find_in_2_x(lines):
   return map(artifacts_from_jar_dirs ,jar_dirs)
 
 def artifacts_from_jar_dirs(d):
+  # fixme group 目录是多级，不能按 / 划分 group，按倒数第 n 个划分
   ss = str(d).split('/')
   sections = [ss[0],ss[1],'jar',ss[2],'COMPILE']
   return ':'.join(sections)
