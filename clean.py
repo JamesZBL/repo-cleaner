@@ -21,7 +21,7 @@ from plugins import find_plugin_artifacts_from_lines
 
 PROJECTS_HOME = '/Users/james/r'
 MAVEN_HOME = Path.home().joinpath('.m2')
-REPOSITORY_HOME = '{}/repository'.format(MAVEN_HOME)
+REPOSITORY_HOME = MAVEN_HOME.joinpath('repository')
 INCLUDES = []
 
 def find_in_use_artifacts():
