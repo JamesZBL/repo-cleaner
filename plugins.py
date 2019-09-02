@@ -14,20 +14,25 @@
 
 import re
 
-strategy = { 
-  3: find_in_3_x 
-}
-
 def find_plugin_artifacts_from_lines(lines):
   version = None
+  strategy = { 
+    3: find_in_3_x 
+  }
   dependency_version_line_patter = re.compile(r'.*maven-dependency-plugin\:(((([0-9])\.)+)[0-9])\:resolve-plugins.*\@.*$')
   for line in lines:
     match = re.search(dependency_version_line_patter, line)
     if match is not None:
       start, end = match.regs[4]
       version = int(line[start:end])
-  if version is not None:
-    strategy.get(version)()
+      try:
+        return strategy[version](lines)
+      except KeyError:
+        not_supported_version(version)
+  return []
+
+def not_supported_version(v):
+  print('Version {} is not supported.'.format(v))
 
 def find_in_3_x(lines):
   plugin_jar_dep_pattern = re.compile(r'\[INFO\]\s+(.*\:.*\:jar\:.*)$')

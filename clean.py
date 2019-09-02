@@ -22,7 +22,7 @@ from plugins import find_plugin_artifacts_from_lines
 PROJECTS_HOME = '/Users/james/r'
 MAVEN_HOME = Path.home().joinpath('.m2')
 REPOSITORY_HOME = MAVEN_HOME.joinpath('repository')
-INCLUDES = []
+INCLUDES = ['posgen']
 
 def find_in_use_artifacts():
   project_dirs = find_root_by_file_name(PROJECTS_HOME, [r'pom.xml'], 'parent')
@@ -82,8 +82,8 @@ def ask_and_print_dirs(dirs, name):
       print(d)
 
 def ask_and_delete_dirs(dirs, name):
-  _in = input('Delete all {} {}? [y/N]'.format(len(dirs), name))
-  if 'y' == _in:
+  _in = input('[ Danger !!! ] Delete all {} {}? [yes/N]'.format(len(dirs), name))
+  if 'yes' == _in:
     for d in dirs:
       absolute_path = str(Path(REPOSITORY_HOME).joinpath(d))
       shutil.rmtree(absolute_path)
