@@ -13,11 +13,14 @@
 # limitations under the License.
 
 import re
+from config import *
+from common import find_root_by_file_name
 
 def find_plugin_artifacts_from_lines(lines):
   version = None
   strategy = { 
-    3: find_in_3_x 
+    3: find_in_3_x,
+    2: find_in_2_x
   }
   dependency_version_line_patter = re.compile(r'.*maven-dependency-plugin\:(((([0-9])\.)+)[0-9])\:resolve-plugins.*\@.*$')
   for line in lines:
@@ -45,3 +48,23 @@ def find_in_3_x(lines):
       artifact = line[start:end] + ':runtime'
       result.append(artifact)
   return result
+
+def find_in_2_x(lines):
+  jars = []
+  # Plugin Resolved: jooq-codegen-maven-3.11.12.jar
+  # Plugin Dependency Resolved: jooq-codegen-3.11.12.jar
+  jar_patterns = [r'Plugin Resolved\:\s(.*\.jar)', r'Plugin Dependency Resolved\:\s(.*\.jar)']
+  for line in lines:
+    for pattern in jar_patterns:
+      match = re.search(pattern, line)
+      if match is not None:
+        start, end = match.regs[1]
+        jar = line[start:end]
+        jars.append(jar)
+  jar_dirs = find_root_by_file_name(REPOSITORY_HOME, jars, reg=False)
+  return map(artifacts_from_jar_dirs ,jar_dirs)
+
+def artifacts_from_jar_dirs(d):
+  ss = str(d).split('/')
+  sections = [ss[0],ss[1],'jar',ss[2],'COMPILE']
+  return ':'.join(sections)

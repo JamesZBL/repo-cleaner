@@ -18,11 +18,7 @@ import os, subprocess, re, shutil
 from common import find_root_by_file_name, artifact_relative_dirs
 from dependencies import find_dependencies_from_lines
 from plugins import find_plugin_artifacts_from_lines
-
-PROJECTS_HOME = '/Users/james/r'
-MAVEN_HOME = Path.home().joinpath('.m2')
-REPOSITORY_HOME = MAVEN_HOME.joinpath('repository')
-INCLUDES = ['posgen']
+from config import *
 
 def find_in_use_artifacts():
   project_dirs = find_root_by_file_name(PROJECTS_HOME, [r'pom.xml'], 'parent')
