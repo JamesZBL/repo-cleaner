@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os, subprocess, re, shutil, logging, log
 from pathlib import Path
 from functools import reduce
-import os, subprocess, re, shutil
 from common import find_root_by_file_name, artifact_relative_dirs
 from dependencies import find_dependencies_from_lines
 from plugins import find_plugin_artifacts_from_lines
@@ -72,6 +72,8 @@ def in_use_artifact_dirs():
   return result
 
 def ask_and_print_dirs(dirs, name):
+  for d in dirs:
+    logging.info('{} detected: {}'.format(name, d))
   _in = input('Show all {} {}? [y/N]'.format(len(dirs), name))
   if 'y' == _in:
     for d in dirs:
@@ -82,8 +84,18 @@ def ask_and_delete_dirs(dirs, name):
   if 'yes' == _in:
     for d in dirs:
       absolute_path = str(Path(REPOSITORY_HOME).joinpath(d))
+      logging.info('Removing dir: {}'.format(absolute_path))
       shutil.rmtree(absolute_path)
+      logging.info('{} directories removed'.format(len(dirs)))
+  elif 'y' == _in:
+    print('Please input \'yes\' or \'N\'')
+    ask_and_delete_dirs(dirs, name)
 
+def log_boot():
+  logging.info('Repo Cleaner Started')
+
+log.init_logging()
+log_boot()
 existing_artifact_dirs = find_existing_artifac_dirs()
 in_use_artifact_dirs = in_use_artifact_dirs()
 

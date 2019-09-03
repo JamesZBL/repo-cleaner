@@ -16,6 +16,8 @@ MAVEN_HOME = '/path/to/your/mave/home'
 REPOSITORY_HOME = '/path/to/your/maven/repository'
 # 扫描哪些项目，如果为空则全部扫描
 INCLUDES = ['project_1', 'project_2']
+# 日志
+LOG_ENABLE = False
 ```
 
 ## 3. 运行

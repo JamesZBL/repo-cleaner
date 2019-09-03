@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
+import re, logging
 
 def find_dependencies_from_lines(lines):
   tree_title_patter = re.compile(r'maven-dependency-plugin\:.*\:tree.* @\s.*')
@@ -31,7 +31,7 @@ def find_dependencies_from_lines(lines):
       start, end = regs[len(regs)-2]
       artifacs.append(line[start:end])
   if not title_found:
-    print('Maven installed uncorrectly.')
+    logging.info('Maven installed uncorrectly.')
   if title_found and not dependency_found:
-    print('No dependency found.')
+    logging.info('No dependency found.')
   return artifacs

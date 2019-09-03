@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pathlib import Path
+import sys, logging, config
 
-PROJECTS_HOME = '/Users/james/r'
-MAVEN_HOME = Path.home().joinpath('.m2')
-REPOSITORY_HOME = MAVEN_HOME.joinpath('repository')
-INCLUDES = ['jmp']
-LOG_ENABLE = True
+log_level = logging.INFO if config.LOG_ENABLE else logging.ERROR
+
+def init_logging():
+  logging.basicConfig(
+    filename='app.log',
+    format='%(asctime)s - [%(levelname)s] -  %(message)s',
+    level=log_level
+  )

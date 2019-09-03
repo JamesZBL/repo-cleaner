@@ -26,8 +26,8 @@ def find_plugin_artifacts_from_lines(lines):
   for line in lines:
     match = re.search(dependency_version_line_patter, line)
     if match is not None:
-      start, end = match.regs[4]
-      version = int(line[start:end])
+      start, end = match.regs[1]
+      version = int(line[start:end].split('.')[0])
       try:
         return strategy[version](lines)
       except KeyError:
@@ -62,10 +62,12 @@ def find_in_2_x(lines):
         jar = line[start:end]
         jars.append(jar)
   jar_dirs = find_root_by_file_name(REPOSITORY_HOME, jars, reg=False)
-  return map(artifacts_from_jar_dirs ,jar_dirs)
+  return map(artifacts_from_jar_dir ,jar_dirs)
 
-def artifacts_from_jar_dirs(d):
-  # fixme group 目录是多级，不能按 / 划分 group，按倒数第 n 个划分
+def artifacts_from_jar_dir(d):
   ss = str(d).split('/')
-  sections = [ss[0],ss[1],'jar',ss[2],'COMPILE']
+  groupId = '.'.join(ss[0:-2])
+  artifactId = ss[-2]
+  version = ss[-1]
+  sections = [groupId,artifactId,'jar',version,'COMPILE']
   return ':'.join(sections)
