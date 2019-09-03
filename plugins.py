@@ -51,8 +51,6 @@ def find_in_3_x(lines):
 
 def find_in_2_x(lines):
   jars = []
-  # Plugin Resolved: jooq-codegen-maven-3.11.12.jar
-  # Plugin Dependency Resolved: jooq-codegen-3.11.12.jar
   jar_patterns = [r'Plugin Resolved\:\s(.*\.jar)', r'Plugin Dependency Resolved\:\s(.*\.jar)']
   for line in lines:
     for pattern in jar_patterns:
