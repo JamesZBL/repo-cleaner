@@ -86,7 +86,7 @@ def ask_and_delete_dirs(dirs, name):
       absolute_path = str(Path(REPOSITORY_HOME).joinpath(d))
       logging.info('Removing dir: {}'.format(absolute_path))
       shutil.rmtree(absolute_path)
-      logging.info('{} directories removed'.format(len(dirs)))
+    logging.info('{} directories removed'.format(len(dirs)))
   elif 'y' == _in:
     print('Please input \'yes\' or \'N\'')
     ask_and_delete_dirs(dirs, name)
