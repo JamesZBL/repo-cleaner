@@ -34,9 +34,14 @@ def find_in_use_artifacts():
     out = str(out)
     lines = out.split('\\n')
     artifacts = find_dependencies_from_lines(lines)
+    if 0 == len(artifacts):
+      process = subprocess.Popen('mvn dependency:list', stdout=subprocess.PIPE, shell=True)
+      out = process.communicate()
+      out = str(out)
+      lines = out.split('\\n')
+      artifacts = find_dependencies_from_lines(lines)
     result.extend(artifacts)
   result = list(set(result))
-  result.sort()
   return result
 
 def find_plugin_artifacts():
@@ -55,7 +60,6 @@ def find_plugin_artifacts():
     jars = find_plugin_artifacts_from_lines(lines)
     result.extend(jars)
   result = list(set(result))
-  result.sort()
   return result
 
 def find_existing_artifac_dirs():
@@ -69,6 +73,8 @@ def in_use_artifact_dirs():
   plugins = find_plugin_artifacts()
   plugin_dirs = artifact_relative_dirs(plugins)
   result.extend(plugin_dirs)
+  result = list(set(result))
+  result.sort()
   return result
 
 def ask_and_print_dirs(dirs, name):

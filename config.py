@@ -17,5 +17,5 @@ from pathlib import Path
 PROJECTS_HOME = '/Users/james/r'
 MAVEN_HOME = Path.home().joinpath('.m2')
 REPOSITORY_HOME = MAVEN_HOME.joinpath('repository')
-INCLUDES = ['jmp']
+INCLUDES = []
 LOG_ENABLE = True

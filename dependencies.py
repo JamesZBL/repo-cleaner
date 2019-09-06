@@ -16,7 +16,7 @@ import re, logging
 
 def find_dependencies_from_lines(lines):
   tree_title_patter = re.compile(r'maven-dependency-plugin\:.*\:tree.* @\s.*')
-  dependency_patter = re.compile(r'(\|\s)?(\+|\\)-\s(.*\..*\:.*\:.*\:.*\:(compile|provided|test|runtime|system|import))')
+  dependency_patter = re.compile(r'\s+([\w\.]*\:.*\:.*\:.*\:(compile|provided|test|runtime|system|import))')
   title_found = False
   dependency_found = False
   artifacs = []
